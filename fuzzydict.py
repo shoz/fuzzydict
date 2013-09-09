@@ -4,6 +4,8 @@ class FuzzyDict(dict):
     def __getitem__(self, key):
         if self.has_key(key):
             ret = [key]
+        else:
+            ret = []
         chars = int(len(key) * self.threshold)
         keys = [x for x in self.keys() if len(x) == len(key) and x != key]
         for k in keys:
