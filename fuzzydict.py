@@ -14,4 +14,7 @@ class FuzzyDict(dict):
             if chars <= match and self.has_key(k):
                 ret.append(k)
         return ret
-
+    def assign(self, obj):
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                dict.__setitem__(self, k, v)
