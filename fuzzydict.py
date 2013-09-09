@@ -14,16 +14,4 @@ class FuzzyDict(dict):
             if chars <= match and self.has_key(k):
                 ret.append(k)
         return ret
- 
-def main():
-    d = FuzzyDict(0.9)
-    d['AGCGGTC'] = 1
-    d['GGCGGTC'] = 2
-    d['GGTAGTC'] = 3
-    d['XXXXXXX'] = 4
-    d['ATGAT'] = 5
-    print d['GGCGGTC']
-    print d.get('AGCGGTC')
-    
-if __name__ == '__main__':
-    main()
+
