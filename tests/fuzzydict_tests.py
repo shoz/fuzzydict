@@ -42,7 +42,8 @@ class FuzzyDictTests(unittest.TestCase):
             threshold = params[0]
             query = params[1]
             fd = self._set_datasets(FuzzyDict(threshold))
-            keys, values = fd.fuzzy_items(query)
+            keys = [key for key in fd.fuzzy_keys(query)]
+            values = [value for value in fd.fuzzy_values(query)]
             assert len(keys) == len(answer)
             assert len(values) == len(answer)
             for k, v in answer:

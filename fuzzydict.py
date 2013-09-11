@@ -3,11 +3,7 @@ class FuzzyDict(dict):
         self.threshold = float(threshold)
     def _get_fuzzy_elements(self, key):
         if self.has_key(key):
-            ret_keys = [key]
-            ret_values = [self[key]]
-        else:
-            ret_keys = []
-            ret_values = []
+            yield key, self[key]
         chars = int(len(key) * self.threshold)
         keys = [x for x in self.keys() if len(x) == len(key) and x != key]
         for k in keys:
@@ -16,9 +12,8 @@ class FuzzyDict(dict):
                 if key[i] == k[i]:
                     match += 1
             if chars <= match and self.has_key(k):
-                ret_keys.append(k)
-                ret_values.append(self[k])
-        return ret_keys, ret_values
+                yield k, self[k]
+        StopIteration()
     def assign_object(self, obj):
         if isinstance(obj, dict):
             for k, v in obj.items():
@@ -26,16 +21,20 @@ class FuzzyDict(dict):
         else:
             raise TypeError()
     def fuzzy_keys(self, key):
-        return self._get_fuzzy_elements(key)[0]
+        for k, v in self._get_fuzzy_elements(key):
+            yield k
+        StopIteration()
     def fuzzy_values(self, key):
-        return self._get_fuzzy_elements(key)[1]
+        for k, v in self._get_fuzzy_elements(key):
+            yield v
+        StopIteration()
     def fuzzy_items(self, key):
-        return self._get_fuzzy_elements(key)
-    def fuzzy_assign(self, k, v):
-        keys = self._get_fuzzy_elements(k)[0]
-        for key in keys:
-            self[key] = v
-    def fuzzy_add(self, k, v):
-        keys = self._get_fuzzy_elements(k)[0]
-        for key in keys:
-            self[key] += v
+        for k, v in self._get_fuzzy_elements(key):
+            yield k, v
+        StopIteration()
+    def fuzzy_assign(self, key, value):
+        for k, v in self._get_fuzzy_elements(key):
+            self[k] = value
+    def fuzzy_add(self, key, value):
+        for k, v in self._get_fuzzy_elements(key):
+            self[k] += value
