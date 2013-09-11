@@ -29,3 +29,7 @@ class FuzzyDict(dict):
         return self._get_fuzzy_elements(key)[1]
     def fuzzy_items(self, key):
         return self._get_fuzzy_elements(key)
+    def fuzzy_assign(self, k, v):
+        keys = self._get_fuzzy_elements(k)[0]
+        for key in keys:
+            self[key] = v
