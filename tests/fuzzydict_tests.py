@@ -4,45 +4,47 @@ import unittest
 class FuzzyDictTests(unittest.TestCase):
     def setUp(self):
         pass
-    def tests(self):
-        sets = [((0.5, '0123456789'), ['0123456789',
-                                       'X123456789',
-                                       'XX23456789',
-                                       'XXX3456789',
-                                       'XXXX456789',
-                                       'XXXXX56789',
-                                        ]),
-                ((1.0, '0123456789'), ['0123456789']),
-                ((0.1, '0123456789'), ['0123456789',
-                                       'X123456789',
-                                       'XX23456789',
-                                       'XXX3456789',
-                                       'XXXX456789',
-                                       'XXXXX56789',
-                                       'XXXXXX6789',
-                                       'XXXXXXX789',
-                                       'XXXXXXXX89',
-                                       'XXXXXXXXX9',
-                                      ]),
-                ]
-        for params, answer in sets:
+    def _set_datasets(self, d):
+        d.setdefault('0123456789', 1)
+        d.setdefault('X123456789', 2)
+        d.setdefault('XX23456789', 3)
+        d.setdefault('XXX3456789', 4)
+        d.setdefault('XXXX456789', 5)
+        d.setdefault('XXXXX56789', 6)
+        d.setdefault('XXXXXX6789', 7)
+        d.setdefault('XXXXXXX789', 8)
+        d.setdefault('XXXXXXXX89', 9)
+        d.setdefault('XXXXXXXXX9', 10)
+        d.setdefault('XXXXXXXXXX', 11)
+        return d
+    def test_getitem(self):
+        test_sets = [((0.5, '0123456789'), [('0123456789', 1),
+                                            ('X123456789', 2),
+                                            ('XX23456789', 3),
+                                            ('XXX3456789', 4),
+                                            ('XXXX456789', 5),
+                                            ('XXXXX56789', 6)
+                                            ]),
+                     ((1.0, '0123456789'), [('0123456789', 1)]),
+                     ((0.1, '0123456789'), [('0123456789', 1),
+                                            ('X123456789', 2),
+                                            ('XX23456789', 3),
+                                            ('XXX3456789', 4),
+                                            ('XXXX456789', 5),
+                                            ('XXXXX56789', 6),
+                                            ('XXXXXX6789', 7),
+                                            ('XXXXXXX789', 8),
+                                            ('XXXXXXXX89', 9),
+                                            ('XXXXXXXXX9', 10)
+                                            ]),
+                     ]
+        for params, answer in test_sets:
             threshold = params[0]
             query = params[1]
             fd = self._set_datasets(FuzzyDict(threshold))
-            ret = fd[query]
-            assert len(ret) == len(answer)
-            for e in answer:
-                assert e in ret
-    def _set_datasets(self, d):
-        d['0123456789'] = 1
-        d['X123456789'] = 2
-        d['XX23456789'] = 3
-        d['XXX3456789'] = 4
-        d['XXXX456789'] = 5
-        d['XXXXX56789'] = 6
-        d['XXXXXX6789'] = 7
-        d['XXXXXXX789'] = 8
-        d['XXXXXXXX89'] = 9
-        d['XXXXXXXXX9'] = 10
-        d['XXXXXXXXXX'] = 11
-        return d
+            keys, values = fd.fuzzy_items(query)
+            assert len(keys) == len(answer)
+            assert len(values) == len(answer)
+            for k, v in answer:
+                assert k in keys
+                assert v in values

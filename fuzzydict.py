@@ -1,11 +1,13 @@
 class FuzzyDict(dict):
     def __init__(self, threshold):
         self.threshold = float(threshold)
-    def __getitem__(self, key):
+    def _get_fuzzy_elements(self, key):
         if self.has_key(key):
-            ret = [key]
+            ret_keys = [key]
+            ret_values = [self[key]]
         else:
-            ret = []
+            ret_keys = []
+            ret_values = []
         chars = int(len(key) * self.threshold)
         keys = [x for x in self.keys() if len(x) == len(key) and x != key]
         for k in keys:
@@ -14,9 +16,16 @@ class FuzzyDict(dict):
                 if key[i] == k[i]:
                     match += 1
             if chars <= match and self.has_key(k):
-                ret.append(k)
-        return ret
-    def assign(self, obj):
+                ret_keys.append(k)
+                ret_values.append(self[k])
+        return ret_keys, ret_values
+    def assign_dict(self, obj):
         if isinstance(obj, dict):
             for k, v in obj.items():
-                dict.__setitem__(self, k, v)
+                self[k] = v
+    def fuzzy_keys(self, key):
+        return self._get_fuzzy_elements(key)[0]
+    def fuzzy_values(self, key):
+        return self._get_fuzzy_elements(key)[1]
+    def fuzzy_items(self, key):
+        return self._get_fuzzy_elements(key)
