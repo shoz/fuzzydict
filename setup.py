@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 def readme():
     with open("README.rst") as f:
@@ -19,5 +19,6 @@ setup(
     author='Shoji Ihara',
     author_email='shoji.ihara@gmail.com',
     url='https://github.com/shoz/fuzzydict',
+    packages=['fuzzydict'],
     license='MIT'
 )

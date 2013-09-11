@@ -1,1 +1,1 @@
-import fuzzydict
+from .fuzzydict import FuzzyDict
