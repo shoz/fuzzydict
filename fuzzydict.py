@@ -19,10 +19,12 @@ class FuzzyDict(dict):
                 ret_keys.append(k)
                 ret_values.append(self[k])
         return ret_keys, ret_values
-    def assign_dict(self, obj):
+    def assign_object(self, obj):
         if isinstance(obj, dict):
             for k, v in obj.items():
                 self[k] = v
+        else:
+            raise TypeError()
     def fuzzy_keys(self, key):
         return self._get_fuzzy_elements(key)[0]
     def fuzzy_values(self, key):

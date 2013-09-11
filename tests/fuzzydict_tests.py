@@ -78,3 +78,14 @@ class FuzzyDictTests(unittest.TestCase):
             fd.fuzzy_add(query, 5)
             for k, v in answer:
                 assert fd[k] == v
+    def test_assign_object(self):
+        d = {'foo': 'bar'}
+        fd1 = FuzzyDict(1)
+        fd2 = FuzzyDict(2)
+        fd2['foo'] = 'piyo'
+        fd1.assign_object(d)
+        assert isinstance(fd1, FuzzyDict) == True
+        assert fd1['foo'] == 'bar'
+        fd1.assign_object(fd2)
+        assert isinstance(fd1, FuzzyDict) == True
+        assert fd1['foo'] == 'piyo'
