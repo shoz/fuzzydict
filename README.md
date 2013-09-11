@@ -1,4 +1,4 @@
-*** Fuzzy Dict
+### Fuzzy Dict
 
 Example:
 
@@ -11,4 +11,4 @@ Example:
     >>> [key for key in fdict.fuzzy_keys('0123456789')]
     [2, 3, 4, 5, 6, 7]
     >>> fdict['0123456789'] # You can also access a FuzzyDict as a normal dict
-    1
+    2
