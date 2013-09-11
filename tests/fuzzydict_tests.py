@@ -48,7 +48,7 @@ class FuzzyDictTests(unittest.TestCase):
             for k, v in answer:
                 assert k in keys
                 assert v in values
-    def test_setitem(self):
+    def test_fuzzy_assign(self):
         test_sets = [((0.5, '0123456789'), [('0123456789', 5),
                                             ('X123456789', 5),
                                             ('XX23456789', 5),
@@ -61,5 +61,20 @@ class FuzzyDictTests(unittest.TestCase):
             query = params[1]
             fd = self._set_datasets(FuzzyDict(threshold))
             fd.fuzzy_assign(query, 5)
+            for k, v in answer:
+                assert fd[k] == v
+    def test_fuzzy_add(self):
+        test_sets = [((0.5, '0123456789'), [('0123456789', 6),
+                                            ('X123456789', 7),
+                                            ('XX23456789', 8),
+                                            ('XXX3456789', 9),
+                                            ('XXXX456789', 10),
+                                            ('XXXXX56789', 11)
+                                            ])]
+        for params, answer in test_sets:
+            threshold = params[0]
+            query = params[1]
+            fd = self._set_datasets(FuzzyDict(threshold))
+            fd.fuzzy_add(query, 5)
             for k, v in answer:
                 assert fd[k] == v

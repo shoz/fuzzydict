@@ -33,3 +33,7 @@ class FuzzyDict(dict):
         keys = self._get_fuzzy_elements(k)[0]
         for key in keys:
             self[key] = v
+    def fuzzy_add(self, k, v):
+        keys = self._get_fuzzy_elements(k)[0]
+        for key in keys:
+            self[key] += v
