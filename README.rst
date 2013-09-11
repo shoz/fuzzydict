@@ -1,6 +1,6 @@
-### Fuzzy Dict
+**fuzzydict, an ambiguous dictionary**
 
-Example:
+.. sourcecode:: python
 
     >>> fdict = FuzzyDict(0.5)
     >>> [key for key in fdict.fuzzy_keys('0123456789')]
